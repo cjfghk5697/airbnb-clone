@@ -26,8 +26,12 @@ PyMySQL = "==1.0.2"
 pyOpenSSL = "==20.0.1"
 Werkzeug = "==1.0.1"
 django = "==2.2.5"
+black = "*"
+pillow = "*"
 
 [dev-packages]
+flake8 = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.9"
