@@ -20,7 +20,7 @@ class User(AbstractUser):
 
     LANGUAGE_CHOICES=(
         (LANGUAGE_ENGLISH,"English"),
-        (LANGUAGE_KOREAN,"Korean")
+        (LANGUAGE_KOREAN,"Korean"),
     )
 
     CURRENCY_USD="usd"
@@ -34,7 +34,7 @@ class User(AbstractUser):
     gender=models.CharField(choices=GENDER_CHOICES,max_length=10, blank=True)
     bio = models.TextField(blank=True)
     birthdate=models.DateField(blank=True, null=True)
-    langauae=models.CharField(choices=LANGUAGE_CHOICES,max_length=2,blank=True)
+    language=models.CharField(choices=LANGUAGE_CHOICES,max_length=2,blank=True)
     currency=models.CharField(choices=CURRRENCHY_CHOICES,max_length=3, blank=True)
     superhost=models.BooleanField(default=False)
 
