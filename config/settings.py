@@ -20,15 +20,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
+SECRET_KEY = "#ojp=jbvezkt#q*716x4v8tu_vmz*rcm$zlfho!l!kysvocuom"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-DJANGO_APPS=[
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -37,16 +36,20 @@ DJANGO_APPS=[
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS=["django_countries"]
+THIRD_PARTY_APPS = ["django_countries"]
 
-PROJECT_APPS=[
+PROJECT_APPS = [
     "core.apps.CoreConfig",
     "users.apps.UsersConfig",
     "rooms.apps.RoomsConfig",
+    "reviews.apps.ReviewsConfig",
+    "reservations.apps.ReservationsConfig",
+    "lists.apps.ListsConfig",
+    "conversations.apps.ConversationsConfig",
 ]
 
 
-INSTALLED_APPS =DJANGO_APPS+PROJECT_APPS
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -129,4 +132,4 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 
-AUTH_USER_MODEL='users.User'
+AUTH_USER_MODEL = "users.User"
