@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.contrib.admin.options import HORIZONTAL
+from django.utils.html import mark_safe
 from . import models
 
 # Register your models here.
@@ -8,7 +8,16 @@ from . import models
 @admin.register(models.RoomType, models.Facility, models.Amenity, models.HouseRule)
 class ItemAdmin(admin.ModelAdmin):
     """
-    Item Admin Definition"""
+    Item Admin Definition
+    """
+
+    list_display = (
+        "name",
+        "used_by",
+    )
+
+    def used_by(self, obj):
+        return obj.rooms.count()
 
     pass
 
@@ -18,7 +27,18 @@ class RoomAdmin(admin.ModelAdmin):
     """Room Admin Definition"""
 
     fieldsets = (
-        ("Spaces", {"fields": ("guests", "beds", "bedrooms", "baths",)})(
+        (
+            "Spaces",
+            {
+                "fields": (
+                    "guests",
+                    "beds",
+                    "bedrooms",
+                    "baths",
+                )
+            },
+        ),
+        (
             "Basic Info",
             {
                 "fields": (
@@ -44,7 +64,7 @@ class RoomAdmin(admin.ModelAdmin):
             "More About the Space",
             {
                 "fields": (
-                    "amenities",
+                    "count_amenities",
                     "facilities",
                     "house_rules",
                 )
@@ -64,24 +84,46 @@ class RoomAdmin(admin.ModelAdmin):
         "check_in",
         "check_out",
         "instant_book",
+        "count_amenities",
+        "count_photos",
+        "total_rating",
     )
     list_filter = (
-        "isntant_book",
+        "instant_book",
         "host__superhost",
         "room_type",
         "amenities",
-        "facilites",
+        "facilities",
         "house_rules",
         "city",
         "country",
     )
 
+    raw_id_fields = ("host",)
     search_filter = ("=city", "^host__username")
     filter_horizontal = ("amenities", "facilities", "house_rules")
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+    def count_amenities(self, obj):
+        return obj.amenities.count()
+
+    def count_phtos(self, obj):
+        return obj.photos.count()
+
+
+class PhotoInline(admin.TabluraInline):
+    model = models.Photo
 
 
 @admin.register(models.Photo)
 class PhotoAdmin(admin.ModelAdmin):
     """Photo Admin Definition"""
 
-    pass
+    list_display = ("__str__", "get_thumbnail")
+
+    def get_thumbnail(self, obj):
+        return mark_safe(f'<img width="50px" src="{obj.file.url}"/>')
+
+    get_thumbnail.short_description = "Thumbnail"
