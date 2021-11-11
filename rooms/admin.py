@@ -40,13 +40,16 @@ class RoomAdmin(admin.ModelAdmin):
         ),
         (
             "Basic Info",
+            {"fields": ("name", "description", "country", "city", "address", "price")},
             {
                 "fields": (
                     "name",
                     "description",
                     "country",
+                    "city",
                     "address",
                     "price",
+                    "room_type",
                 )
             },
         ),
@@ -113,7 +116,7 @@ class RoomAdmin(admin.ModelAdmin):
         return obj.photos.count()
 
 
-class PhotoInline(admin.TabluraInline):
+class PhotoInline(admin.TabularInline):
     model = models.Photo
 
 

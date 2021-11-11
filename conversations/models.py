@@ -17,10 +17,10 @@ class Conversation(core_models.TimeStampedModel):
 
     count_messages.short_description = "Number of messages"
 
-    def count_participatns(self):
+    def count_participants(self):
         return self.messages.count()
 
-    count_participatns.short_description = "Number of participants"
+    count_participants.short_description = "Number of participants"
 
 
 class Message(core_models.TimeStampedModel):
