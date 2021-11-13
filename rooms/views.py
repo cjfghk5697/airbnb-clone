@@ -1,3 +1,4 @@
+from django.db.models.query import InstanceCheckMeta
 from django.views.generic import ListView
 from django.shortcuts import render
 from django_countries import countries
@@ -32,14 +33,67 @@ def search(request):
     room_type = int(request.GET.get("country", 0))
     room_types = models.RoomType.object.all()
 
+    price = int(requset.GET.get("price", 0))
+    guests = int(request.GET.get("guests", 0))
+    bedrooms = int(requset.GET.get("bedrooms", 0))
+    beds = int(requset.GET.get("beds", 0))
+    baths = int(requset.GET.get("baths", 0))
+    instant = bool(requst.GET.get("instant", False))
+    superhost = bool(requst.GET.get("superhost", False))
+    s_amenities = requset.GET.getlIst("amenities")
+    s_facilities = requset.GET1.getlist("facilities")
+
     form = {
         "city": city,
         "s_room_type": room_type,
         "s_country": country,
+        "price": price,
+        "guests": guests,
+        "bedrooms": bedrooms,
+        "beds": beds,
+        "baths": baths,
+        "s_amenities": s_amenities,
+        "s_facilities": s_facilities,
+        "instant": instant,
+        "superhost": superhost,
     }
+    room_types = models.RoomType.objects.all()
+    amenities = models.Amenity.objects.all()
+    facilities = models.Facility.objects.all()
     choices = {
         "countries": countries,
         "room_types": room_types,
+        "amenities": amenities,
+        "facilities": facilities,
     }
+    filter_args = {}
+    if city != "Anywhere":
+        filter_args["city_startswith"] = city
 
-    return render(request, "rooms/search.html", {**form, **choices})
+    filter_args["country"] = country
+
+    if room_type != 0:
+        filter_args["room_type__pk"] = room_type
+    rooms = models.Room.objects.filter(**filter_args)
+
+    if price != 0:
+        filter_args["price__lte"] = price
+    if guests != 0:
+        filter_args["guests_gte"] = guests
+    if bedrooms != 0:
+        filter_args["bedrooms_gte"] = bedrooms
+    if beds != 0:
+        filter_args["beds_gte"] = beds
+    if baths != 0:
+        filter_args["baths_gte"] = baths
+    if instant is True:
+        filter_args["instant_book"] = True
+    if superhost is True:
+        filter_args["superhost"] = True
+    if len(s_amenities) > 0:
+        for s_amenity in s_amenities:
+            filter_args["amenities__pk"] = int(s_amenity)
+    if len(s_facilities) > 0:
+        for a_facility in s_facilities:
+            filter_args["facilities__pk"] = int(s_facility)
+    return render(request, "rooms/search.html", {**form, **choices, "rooms": rooms})
