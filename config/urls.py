@@ -22,6 +22,8 @@ urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("admin/", admin.site.urls),
     path("rooms/", include("rooms.url", namespace="rooms")),
+    path("users/", include("users.url", namespace="users")),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, documents_root=settings.MEDIA_ROOT)
