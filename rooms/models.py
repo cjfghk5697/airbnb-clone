@@ -103,7 +103,7 @@ class Room(core_models.TimeStampedModel):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("rooms:detail", kwargs={"pk"=self.pk})
+        return reverse("rooms:detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.name

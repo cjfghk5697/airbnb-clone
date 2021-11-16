@@ -1,9 +1,7 @@
-from django.core import paginator
-from django.db.models.query import InstanceCheckMeta
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, View, FormView
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from . import models, rooms
+from . import models, forms
 
 
 class HomeView(ListView):
@@ -25,11 +23,13 @@ class RoomDetail(DetailView):
 
     mode = models.Room
 
-class SearchView(Viewe):
-        """ SearchView Definition """
+
+class SearchView(View):
+    """
+    SearchView Definition
+    """
 
     def get(self, request):
-
         country = request.GET.get("country")
 
         if country:
@@ -90,8 +90,8 @@ class SearchView(Viewe):
 
                 qs = models.Room.objects.filter(**filter_args)
                 paginator = Paginator(qs, 10, orphans=5)
-                page=request.GET.get("page",1)
-                rooms=paginator.get_page(page)
+                page = request.GET.get("page", 1)
+                rooms = paginator.get_page(page)
         else:
             form = forms.SearchForm()
         return render(request, "rooms/search.html", {"form": form, "rooms": rooms})
