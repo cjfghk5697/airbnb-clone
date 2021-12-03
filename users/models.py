@@ -51,7 +51,7 @@ class User(AbstractUser):
         default="",
         required="",
     )
-    login_method-models.CharField(max_length=50,choices=LOGIN_CHOICES,default=LOGIN_EMAIL)
+    login_method.models.CharField(max_length=50,choices=LOGIN_CHOICES,default=LOGIN_EMAIL)
     def verify_email(self):
         if self.email_verified is False:
             secret = uuid.uuid4().hex[:20]
