@@ -49,9 +49,9 @@ class User(AbstractUser):
     email_secret = models.CharField(
         max_length=120,
         default="",
-        required="",
+        blank=True,
     )
-    login_method.models.CharField(max_length=50,choices=LOGIN_CHOICES,default=LOGIN_EMAIL)
+    login_method=models.CharField(max_length=50,choices=LOGIN_CHOICES,default=LOGIN_EMAIL)
     def verify_email(self):
         if self.email_verified is False:
             secret = uuid.uuid4().hex[:20]
@@ -59,12 +59,13 @@ class User(AbstractUser):
             html_message= render_to_string("emails/verify_emil.html",{"secret":secret})
 
             send_mail(
-                "Verify Airbnb Account",
+                _("Verify Airbnb Account"),
                 strip_tags(html_message),
-                html_message=html_message,
                 settings.EMAIL_FROM,
                 [self.email],
                 fail_silently=False,
+                html_message=html_message,
+
             )
             self.save()
         return

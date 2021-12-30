@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from . import forms, models
 
 import os
-import request
+import requests
 
 # Create your views here.
 class LoginView(FormView):
@@ -74,11 +74,11 @@ def github_login(request):
     )
 
 
-class GithubException(Eceveption):
+class GithubException(Exception):
     pass
 
 
-def github_Callback(request):
+def github_callback(request):
     try:
         client_id = os.environ.get("GH_ID")
         client_secret = os.environ.get("GH_SECRET")
